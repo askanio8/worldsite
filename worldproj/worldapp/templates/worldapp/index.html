@@ -1,0 +1,28 @@
+{% extends 'worldapp/base.html' %}
+{% block content %}
+<ul class="list-articles">
+<table>
+  <tr>
+  	<th>Город</th>
+    <th>Страна</th>
+    <th>Регион</th>
+    <th>Население</th>
+  </tr>
+	{% for p in posts %}
+	  <tr>
+		<td>{{p.name}}</td>
+		<td>{{p.countrycode}}</td>
+		<td>{{p.district}}</td>
+		<td>{{p.population}}</td>
+	  </tr>
+	{% endfor %}
+	  <tr>
+  	<th>Городов в списке:</th>
+    <th>{{count}}</th>
+    <th>Среднее по населению:</th>
+    <th>{{sumpopulation}}</th>
+  </tr>
+</table>
+
+</ul>
+{% endblock %}

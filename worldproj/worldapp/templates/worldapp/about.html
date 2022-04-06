@@ -1,0 +1,10 @@
+{% extends 'worldapp/base.html' %}
+{% load worldapp_tags %}
+
+{% block content %}
+<h1>{{title}}</h1>
+{% get_continents as continents %}
+{% for c in continents %}
+    <li class="selected">{{c}}</li>
+{% endfor %}
+{% endblock %}
