@@ -13,19 +13,20 @@
 <table class="table-page" border=0 cellpadding="0" cellspacing="0">
 <tr><td valign=top>
 {% block mainmenu %}
-		<div class="header">
-			<ul id="mainmenu" class="mainmenu">
-			<li class="logo"><a href="{% url 'home' %}"><div class="logo"></div></a></li>
-{% for m in menu %}
-	{% if not forloop.last %}
-			<li><a href="#">{{m.title}}</a></li>
-	{% else %}
-			<li class="last"><a href="#">{{m.title}}</a></li>
-	{% endif %}
-{% endfor %}
-			</ul>
-			<div class="clear"></div>
-		</div>
+<div class="header">
+	<ul id="mainmenu" class="mainmenu">
+	<li class="logo"><a href="{% url 'home' %}"><div class="logo"></div></a></li>
+		{% for m in menu %}
+			<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
+		{% endfor %}
+		{% if request.user.is_authenticated %}
+		<li class="last">{{user.username}} | <a href="{% url 'logout' %}">Logout</a></li>
+		{% else %}
+		<li class="last"><a href="{% url 'register' %}">Register</a> | <a href="{% url 'login' %}">Login</a></li>
+		{% endif %}
+	</ul>
+	<div class="clear"></div>
+</div>
 {% endblock mainmenu %}
 
 
@@ -33,19 +34,19 @@
 <tr>
 <!-- Sidebar слева -->
 	<td valign="top" class="left-chapters">
-		{% get_countries as countries %}
+		{% get_countries_by_continets as countries_by_continets %}
 	<ul id="leftchapters">
-		{% if cat_selected == 0 %}
-			<li class="selected">Все страны</li>
-		{% else %}
-			<li><a href="{% url 'home' %}">Все страны</a></li>
-		{%  endif %}
-		{% for c in countries %}
-			{% if c.name == cat_selected.name %}
-				<li class="selected">{{c.name}}</li>
-			{% else %}
-				<li><a href="{{ c.get_absolute_url }}">{{c.name}}</a> </li>
-			{% endif %}
+		<button class="dropbtn"><a href="{% url 'home' %}">World</a></button>
+
+		{% for continent, countries in countries_by_continets.items %}
+			<div class="dropdown">
+  			<button class="dropbtn">{{continent}}</button>
+  				<div class="dropdown-content">
+				{% for country in countries %}
+					<li><a href="{{ country.get_absolute_url }}">{{country}}</a> </li>
+				{% endfor %}
+  				</div>
+			</div>
 		{% endfor %}
 	</ul>
 </td>
@@ -61,13 +62,37 @@
 {% endblock %}
 	</div>
 <!-- Конец блока контента -->
+<!-- Пагинация -->
+<nav class="list-pages">
+	{% if paginator.num_pages != 1 %}
+		<ul>
+			{% if page_obj.has_previous %}
+				<li class="page-num">
+					<a href="?page={{ page_obj.previous_page_number }}">&lt;</a>
+				</li>
+			{% endif %}
+			{% for p in paginator.page_range %}
+				{% if page_obj.number == p %}
+					<li class="page-num-selected">{{ p }}</li>
+				{% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+					<li class="page-num"><a href="?page={{ p }}">{{ p }}</a></li>
+				{% endif %}
+			{% endfor %}
+			{% if page_obj.has_next %}
+				<li class="page-num">
+					<a href="?page={{ page_obj.next_page_number }}">&gt;</a>
+				</li>
+			{% endif %}
+		</ul>
+	{% endif %}
+</nav>
 
 </td></tr></table>
 </td></tr>
 <!-- Footer -->
 <tr><td valign=top>
 	<div id="footer">
-		<p>&copy; Футер</p>
+		<p>&copy; footer</p>
 	</div>
 </td></tr></table>
 <!-- Конец footer'а и страницы -->

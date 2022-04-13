@@ -2,9 +2,5 @@
 {% load worldapp_tags %}
 
 {% block content %}
-<h1>{{title}}</h1>
-{% get_continents as continents %}
-{% for c in continents %}
-    <li class="selected">{{c}}</li>
-{% endfor %}
+<p style="font-family: arial, sans-serif;font-size: 20px;">Site for mysql db "World"</p>
 {% endblock %}

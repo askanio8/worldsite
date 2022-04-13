@@ -168,7 +168,7 @@ div.button {
 }
 .left-chapters ul {
 	width: 150px;
-	height: 82vh;
+    height: 83vh;
 	margin: 0;
 	padding: 20px 10px 10px 20px;
 	list-style: none;
@@ -182,7 +182,6 @@ div.button {
 }
 .left-chapters ul li.selected {color: #0059b2; }
 .left-chapters ul li a {
-	color: #444;
 	text-decoration: none;
 }
 .left-chapters ul li a:hover { color: #CC0000; }
@@ -407,4 +406,83 @@ td, th {
 
 tr:nth-child(even) {
   background-color: #dddddd;
+}
+
+.dropbtn {
+  background-color: #eee;
+  color: #0059b2;
+  padding: 16px;
+  padding-left: 0px;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  width: 150px;
+  text-align: -webkit-match-parent;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #eee;
+  min-width: 160px;
+
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #eee}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #eee;
+}
+.list-pages {
+	text-align: center;
+	margin: 0 0 20px 0;
+}
+.list-pages ul {
+	margin: 20px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+.list-pages ul li {
+	display: inline-block;
+	margin: 0 20px 0 0;
+}
+.list-pages a {
+	color: #000;
+	font-size: 24px;
+	text-decoration: none;
+}
+.list-pages .page-num, .page-num-selected {
+	display: inline-block;
+	width: 60px;
+	height: 44px;
+	padding: 16px 0 0 0;
+	border: 1px solid #d0d0d0;
+	border-radius: 30px;
+}
+.list-pages .page-num:hover {
+	box-shadow: 3px 3px 1px #d0d0d0;
+}
+.list-pages .page-num-selected {
+	border: none;
+	color: #000;
+	font-size: 20px;
+}
+.list-pages .page-num-selected:hover {
+	box-shadow: none;
 }

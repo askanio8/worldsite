@@ -105,6 +105,15 @@ admin.site.register(City, CityAdmin)
 
 дальше просто замена кода в py и html
 
+создать utils.py и перенести туда mixin-ы
+паргинация
+регистрация
+авторизация
+debug toolbar
+кеширование(на уровне url, блока шаблона, бд, сайта)
+капча pip install django-simple-captcha
+настройка админпанели
+логирование
 
 перед сборкой вродебы надо python manage.py collectstatic
 и DEBUG=False и ip адреса прописать

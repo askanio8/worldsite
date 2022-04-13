@@ -3,10 +3,10 @@
 <ul class="list-articles">
 <table>
   <tr>
-  	<th>Город</th>
-    <th>Страна</th>
-    <th>Регион</th>
-    <th>Население</th>
+  	<th>Town</th>
+    <th>Country</th>
+    <th>District</th>
+    <th>Population</th>
   </tr>
 	{% for p in posts %}
 	  <tr>
@@ -17,9 +17,9 @@
 	  </tr>
 	{% endfor %}
 	  <tr>
-  	<th>Городов в списке:</th>
+  	<th>Cities in the list:</th>
     <th>{{count}}</th>
-    <th>Среднее по населению:</th>
+    <th>Population average:</th>
     <th>{{sumpopulation}}</th>
   </tr>
 </table>

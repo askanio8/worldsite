@@ -6,10 +6,10 @@ from django.urls import reverse
 
 class City(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
-    name = models.CharField(db_column='Name', max_length=35, verbose_name='Название')
-    countrycode = models.ForeignKey('Country', models.DO_NOTHING, db_column='CountryCode', verbose_name='Код страны')
-    district = models.CharField(db_column='District', max_length=20, verbose_name='Регион')
-    population = models.IntegerField(db_column='Population', verbose_name='Население')
+    name = models.CharField(db_column='Name', max_length=35)
+    countrycode = models.ForeignKey('Country', models.DO_NOTHING, db_column='CountryCode')
+    district = models.CharField(db_column='District', max_length=20)
+    population = models.IntegerField(db_column='Population')  # verbose_name='Население'
 
     def __str__(self):
         return self.name
