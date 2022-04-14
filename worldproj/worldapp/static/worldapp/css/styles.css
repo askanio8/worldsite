@@ -173,7 +173,6 @@ div.button {
 	padding: 20px 10px 10px 20px;
 	list-style: none;
 	font-size: 20px;
-	overflow-y: auto;
 }
 .left-chapters ul li {
 	margin: 30px 0 0 0;
@@ -205,7 +204,7 @@ div.button {
 }
 
 .content {
-	padding: 40px 20px 20px 40px;
+	padding: 10px 30px 10px 10px;
 	width: 100%;
 	box-sizing: border-box;
 }
@@ -485,4 +484,9 @@ tr:nth-child(even) {
 }
 .list-pages .page-num-selected:hover {
 	box-shadow: none;
+}
+
+.form-filter-label {
+    display: inline-block;;
+    min-width: 15px;
 }

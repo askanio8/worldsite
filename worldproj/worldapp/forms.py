@@ -27,7 +27,7 @@ class AddPostForm(forms.ModelForm):
         name = self.cleaned_data['name']
         if len(name) > 200:
             raise ValidationError('Длина превышает 200 символов')
-        if not re.fullmatch(r'[a-zA-Z-\s]+', name):
+        if not re.fullmatch(r'[a-zA-Z-\s()]+', name):
             raise ValidationError('Недопустиме символы')
         return name
 
@@ -35,10 +35,14 @@ class AddPostForm(forms.ModelForm):
         district = self.cleaned_data['district']
         if len(district) > 200:
             raise ValidationError('Длина превышает 200 символов')
-        if not re.fullmatch(r'[a-zA-Z-\s]+', district):
+        if not re.fullmatch(r'[a-zA-Z-\s()]+', district):
             raise ValidationError('Недопустиме символы')
         return district
 
+
+class UpdatePostForm(AddPostForm):
+    def is_valid(self):
+        pass
 
 class RegisterUserForm(UserCreationForm):
     username = forms.CharField(label='Login', widget=forms.TextInput(attrs={'class': 'form-input'}))
@@ -62,3 +66,9 @@ class ContactForm(forms.Form):
     email = forms.EmailField(label='Email')
     content = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 10}))
     captcha = CaptchaField()
+
+
+class FilterForm(forms.Form):
+    part_name = forms.CharField(label='Name', max_length=255, required=False, widget=forms.TextInput(attrs={'placeholder': 'part name'}))
+    min_population = forms.IntegerField(label='Min',  required=False, widget=forms.NumberInput(attrs={'placeholder': 'min population'}))
+    max_population = forms.IntegerField(label='Max',  required=False, widget=forms.NumberInput(attrs={'placeholder': 'max population'}))

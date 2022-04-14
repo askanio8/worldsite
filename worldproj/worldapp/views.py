@@ -1,16 +1,18 @@
 import logging
 import os
+import sys
 
 from django.contrib.auth import logout, login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.db.models import Avg, Count
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, FormView, TemplateView
+from django.views.generic import ListView, CreateView, FormView, TemplateView, UpdateView
 
-from .forms import AddPostForm, RegisterUserForm, LoginUserForm, ContactForm
+from .forms import AddPostForm, RegisterUserForm, LoginUserForm, ContactForm, UpdatePostForm, FilterForm
 from .models import *
 from .utils import *
 
@@ -24,11 +26,21 @@ class WorldappHome(DataMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title = 'Main')
+        context['count'] = len(context['posts'])
+        if len(context['posts']) > 0:
+            context['sumpopulation'] = round(sum([c.population for c in context['posts']])/ len(context['posts']))
+        context['form'] = FilterForm()
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_queryset(self):
-        # select_related сразу загружает по внешнему ключу данные из связвнной таблицы, ускоряет
-        return City.objects.all().select_related('countrycode')
+        part_name = self.request.GET.get('part_name', default='')
+        min_population = self.request.GET.get('min_population', default='')
+        max_population = self.request.GET.get('max_population', default='')
+        min_population = min_population if min_population.isdigit() else 0
+        max_population = max_population if max_population.isdigit() else 1000000000
+        return City.objects.filter(name__contains=part_name, population__gte=min_population,
+                                   population__lte=max_population).select_related('countrycode')
+
 
 class WorldappCountry(DataMixin, ListView):
     model = City
@@ -43,8 +55,6 @@ class WorldappCountry(DataMixin, ListView):
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_queryset(self):
-        code = self.kwargs['code']
-        logger.warning(f'get from city with code {code}')
         return City.objects.filter(countrycode=self.kwargs['code']).select_related('countrycode')
 
 
@@ -59,6 +69,42 @@ class AddTown(LoginRequiredMixin, DataMixin, CreateView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title='Add Town')
         return dict(list(context.items()) + list(c_def.items()))
+
+
+class UpdateTown(LoginRequiredMixin, DataMixin, UpdateView):
+    form_class = UpdatePostForm
+    template_name = 'worldapp/updatetown.html'
+    success_url = reverse_lazy('home')
+    login_url = reverse_lazy('login')  # без этого будет 404
+    #raise_exception = True  # с этим 403. если не класс а ф-я, то исп декоратор
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Update Town')
+        context['pk'] = self.kwargs['pk']
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def get_object(self, queryset=None):
+        return City.objects.get(pk=self.kwargs['pk'])
+
+    def post(self, request, *args, **kwargs):
+        town = City.objects.get(pk=self.kwargs['pk'])
+        town.name = request.POST.get('name')
+        town.countrycode = Country.objects.get(code=request.POST.get('countrycode'))
+        town.district = request.POST.get('district')
+        town.population = request.POST.get('population')
+        town.save()
+
+        # логирование
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        ip = None
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        logger.warning(f'updated city {town} from ip: {ip} by user {request.user.username}')
+
+        return redirect('home')
 
 
 class RegistrUser(DataMixin, CreateView):

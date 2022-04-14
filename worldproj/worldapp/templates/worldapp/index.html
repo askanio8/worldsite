@@ -1,5 +1,16 @@
 {% extends 'worldapp/base.html' %}
 {% block content %}
+
+{% if form %}
+	<form method="get" style="display: table; width: 100%;">
+		{% csrf_token %}
+		{% for f in form %}
+			<label class="form-filter-label"  for="{{ f.id_for_label }}"></label>{{ f }}
+		{% endfor %}
+		<button type="submit">Filter</button>
+		<p></p>
+	</form>
+{% endif %}
 <ul class="list-articles">
 <table>
   <tr>
@@ -10,18 +21,24 @@
   </tr>
 	{% for p in posts %}
 	  <tr>
-		<td>{{p.name}}</td>
+		{% if user.is_authenticated %}
+			<td><a href="{% url 'updatetown' p.pk %}">{{p.name}}</a></td>
+		{% else %}
+			<td>{{p.name}}</td>
+		{% endif %}
 		<td>{{p.countrycode}}</td>
 		<td>{{p.district}}</td>
 		<td>{{p.population}}</td>
 	  </tr>
 	{% endfor %}
-	  <tr>
-  	<th>Cities in the list:</th>
-    <th>{{count}}</th>
-    <th>Population average:</th>
-    <th>{{sumpopulation}}</th>
-  </tr>
+		{% if paginator.num_pages == 1 %}
+			<tr>
+			<th>Cities in the list:</th>
+			<th>{{count}}</th>
+			<th>Population average:</th>
+			<th>{{sumpopulation}}</th>
+			</tr>
+		{% endif %}
 </table>
 
 </ul>

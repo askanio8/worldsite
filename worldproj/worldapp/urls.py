@@ -7,6 +7,7 @@ urlpatterns = [
     path('', WorldappHome.as_view(), name='home'),
     path('about/', WorldappAbout.as_view(), name='about'),
     path('addtown/', AddTown.as_view(), name='addtown'),
+    path('update/<int:pk>', UpdateTown.as_view(), name='updatetown'),
     path('contact/', ContactFormView.as_view(), name='contact'),
     path('register/', RegistrUser.as_view(), name='register'),
     path('login/', LoginUser.as_view(), name='login'),
