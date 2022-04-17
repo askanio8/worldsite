@@ -1,0 +1,1 @@
+в worldproj/worldproj/.. создать local_settings.py и prod_settings.py
