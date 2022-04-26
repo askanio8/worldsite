@@ -1,1 +1,8 @@
-в worldproj/worldproj/.. создать local_settings.py и prod_settings.py
+pip freeze > requirements.txt
+в requirements можно добавть
+django-mysql==3.9  # это кроме mysqlclient зачемто
+django-cors-headers==3.5.0  # вроде бы для доступа к бекенду через фротенд
+pika==1.1.0  #  тоже для соединения какогото
+
+create Docerfile
+create docker-compose.yml

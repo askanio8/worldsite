@@ -115,5 +115,7 @@ debug toolbar
 настройка админпанели
 логирование
 
+requirments
+
 перед сборкой вродебы надо python manage.py collectstatic
 и DEBUG=False и ip адреса прописать
