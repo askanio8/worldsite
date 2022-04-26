@@ -1,25 +1,24 @@
 version: '3.9'
+
 services:
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - 8000:8000
+  web:
+    build: ./web
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/app
+      - .:/web_django
+    ports:
+      - '8000:8000'
     depends_on:
       - db
-
   db:
     image: mysql:8.0
-    restart: always
-    environment:
-      MYSQL_DATABASE: admin
-      MYSQL_USER: root
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: password
-    volumes:
-      - .dbdata:/var/lib/mysql
     ports:
-      - 3306:3306
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: 'world'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    restart: always
+    volumes:
+      - ./db_django:/var/lib/mysql
