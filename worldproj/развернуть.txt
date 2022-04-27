@@ -4,5 +4,21 @@ django-mysql==3.9  # это кроме mysqlclient зачемто
 django-cors-headers==3.5.0  # вроде бы для доступа к бекенду через фротенд
 pika==1.1.0  #  тоже для соединения какогото
 
+######################################
+в случе работы через докер
 create Docerfile
 create docker-compose.yml
+проверить хостыб порты, имена бд(без дублирования) в settings.py и docker-compose,
+установить docker и docker-compose
+git clone https://github.com/askanio8/worldsite.git
+перейти в папку с файлом docker-compose
+docker-compose up
+docker-compose up -d
+вход в контейнер docker exec -it имя_контейнера bash
+docker-compose stop
+docker-compose down
+запрос из bash   curl 127.0.0.1:8000
+импорт world.sql в бд (если бд не отвечает, изменить в ее файле настроек 127.0.0.1 на 0.0.0.0)
+
+##############################
+работа через linux
