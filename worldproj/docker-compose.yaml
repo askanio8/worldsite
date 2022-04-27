@@ -15,7 +15,6 @@ services:
     ports:
       - '3306:3306'
     environment:
-      MYSQL_DATABASE: 'world'
       MYSQL_ROOT_PASSWORD: 'password'
     restart: always
     volumes:
