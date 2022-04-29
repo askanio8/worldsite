@@ -18,7 +18,33 @@ docker-compose up -d
 docker-compose stop
 docker-compose down
 запрос из bash   curl 127.0.0.1:8000
+nmap localhost
 импорт world.sql в бд (если бд не отвечает, изменить в ее файле настроек 127.0.0.1 на 0.0.0.0)
 
 ##############################
 работа через linux
+
+обновить linux
+установить mysql
+создать пользователя, пароль, дать разрешения в mysql
+изменить bind 0.0.0.0 в конфиге mysql, если нужен доступ извне
+sudo apt install python3-pip
+sudo apt install python3-venv
+mkdir ~/newproject
+cd ~/newproject
+python3 -m venv my_env
+source my_env/bin/activate
+pip install --upgrade pip
+pip install django
+устанавливаем пакеты из requirements
+python3 manage.py runserver 0.0.0.0:8000
+
+изменяем настройки в settings.py на mysql
+sudo apt install mysql-client
+sudo apt install libmysqlclient-dev
+sudo apt install libssl-dev
+
+заменить папку рядом с venv на свою папку проекта
+python3 manage.py migrate
+
+дальше устанавливать ngnix, делать collectstatic и отключать debug если хочется
